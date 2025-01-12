@@ -3,9 +3,9 @@
 import { LayerType, type RectangleLayer } from "../../_models/canvas.model";
 
 interface ToolMenuProps {
-  onToolChange: (tool: "pen" | "eraser") => void;
+  onToolChange: (tool: "pen" | "eraser" | "move") => void;
   onRectangleAdd: (rectangle: RectangleLayer) => void;
-  currentTool: "pen" | "eraser";
+  currentTool: "pen" | "eraser" | "move";
 }
 
 export const ToolMenu = ({
@@ -13,19 +13,18 @@ export const ToolMenu = ({
   onRectangleAdd,
   currentTool,
 }: ToolMenuProps) => {
-  const createRectangleLayer = (): RectangleLayer => {
-    return {
-      type: LayerType.Rectangle,
-      x: 400,
-      y: 300,
-      width: 100,
-      height: 100,
-      fill: { r: 0, g: 0, b: 0 },
-    };
-  };
-
   return (
     <div className="flex gap-2 mb-4">
+      <button
+        onClick={() => onToolChange("move")}
+        className={`px-4 py-2 rounded ${
+          currentTool === "move"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 hover:bg-gray-300"
+        }`}
+      >
+        ⧴ 이동
+      </button>
       <button
         onClick={() => onToolChange("pen")}
         className={`px-4 py-2 rounded ${
@@ -58,3 +57,14 @@ export const ToolMenu = ({
     </div>
   );
 };
+
+function createRectangleLayer(): RectangleLayer {
+  return {
+    type: LayerType.Rectangle,
+    x: 400,
+    y: 300,
+    width: 100,
+    height: 100,
+    fill: { r: 0, g: 0, b: 0 },
+  };
+}

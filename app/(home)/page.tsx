@@ -24,7 +24,9 @@ const CURSOR_STYLES = {
 
 export default function Home() {
   const [strokeColor, setStrokeColor] = useState<Color>({ r: 0, g: 0, b: 0 });
-  const [currentTool, setCurrentTool] = useState<"pen" | "eraser">("pen");
+  const [currentTool, setCurrentTool] = useState<"pen" | "eraser" | "move">(
+    "move"
+  );
   const [rectangleLayers, setRectangleLayers] = useState<RectangleLayer[]>([]);
 
   return (
@@ -45,15 +47,24 @@ export default function Home() {
           width={800}
           height={600}
         >
-          {currentTool === "pen" ? (
-            <Cursor style={CURSOR_STYLES.pen}>
-              <Stroke color={strokeColor} />
-            </Cursor>
-          ) : (
-            <Cursor style={CURSOR_STYLES.eraser}>
-              <Erase />
-            </Cursor>
-          )}
+          {(() => {
+            switch (currentTool) {
+              case "pen":
+                return (
+                  <Cursor style={CURSOR_STYLES.pen}>
+                    <Stroke color={strokeColor} />
+                  </Cursor>
+                );
+              case "eraser":
+                return (
+                  <Cursor style={CURSOR_STYLES.eraser}>
+                    <Erase />
+                  </Cursor>
+                );
+              default:
+                return null;
+            }
+          })()}
           {rectangleLayers.map((rectangle, index) => (
             <Rectangle
               key={index}
